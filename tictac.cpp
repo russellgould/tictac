@@ -6,9 +6,12 @@ using namespace std;
 
 int main()
 {
+    int gameBoardArray [3][3];
+
     cout << "This is a badass tic-tac-toe game." << endl;
 
-    //add some code and stuff.
+    
+
 
     return 0;
 }
