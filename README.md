@@ -63,3 +63,21 @@ D2 [2][0] [1][1] [0][2]
 i guess there are two ways we could approach this game:
   -check each row/column/diagonal after a move in [i][j] to see if it's filled (brute force)
   -check only the rows/columns/diagonals connected to the entry to see if they're filled (harder)
+
+-------------------------------------------------------------------------------------------------
+| 17 feb 2016 update |
+----------------------
+
+okay there are now two versions of the game up
+
+version 1:
+tictac.cpp is the self-contained version (procedurally written) which basically just has a loop and a function to check if a line/row/diagonal is full
+
+version 2:
+a little more convoluted so i'll walk you through how it works
+
+five files, main.cpp, Board.h, Board.cpp, Line.h, Line.cpp 
+
+just compile them all at once and it'll work. again, there's no guard against the buffer overflow, so you can fuck around with it and play an entire game in one line, if you want. like try entering "A1 B2 A2 C3 A3" and you'll immediately win by filling the first row with X's
+
+i've been meaning to fix that but haven't gotten around to it yet
