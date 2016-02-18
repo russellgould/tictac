@@ -32,6 +32,7 @@ int main()
     do {
         Board game;
         char mv[3] = "  ";
+        char dummy[256];
         char player;
         int i = -1;
 
@@ -56,15 +57,19 @@ int main()
 
                 do {
                         cout << "Enter your move. ";
-                            cin >> mv;
+                          cin >> mv;
+                          cin.getline(dummy, 256);
 
                     } while (!( game.isInputOkay(mv)));
 
+                    game.makeMove(mv, player);
+
                 cout << endl;
-            } while ( (i < 8) && !(game.makeMove( mv, player )) );
+            } while ( (i < 8) && !game.isWinner() );
 
+            game.printGrid();
 
-            if (!game.makeMove ( mv, player ) )
+            if (!game.isWinner() )
                 {
                     cout << "Draw!\n";
                 }
