@@ -81,3 +81,7 @@ five files, main.cpp, Board.h, Board.cpp, Line.h, Line.cpp
 just compile them all at once and it'll work. again, there's no guard against the buffer overflow, so you can fuck around with it and play an entire game in one line, if you want. like try entering "A1 B2 A2 C3 A3" and you'll immediately win by filling the first row with X's
 
 i've been meaning to fix that but haven't gotten around to it yet
+
+------------------------
+
+okay fixed those dumb things. now it's up and running and ready for AI!
