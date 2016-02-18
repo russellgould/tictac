@@ -125,6 +125,7 @@ bool Board::checkLines()
 bool Board::isInputOkay(char input[2])
     {
         if ( (input[0] != 'A' && input[0] != 'B' && input[0] != 'C') ||
+             (input[0] != 'a' && input[0] != 'b' && input[0] != 'c') ||
              (input[1] != '1' && input[1] != '2' && input[1] != '3') )
             {
                 cout << "I didn't understand your input. Please enter:\n\n";
