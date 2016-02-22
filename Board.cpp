@@ -68,26 +68,18 @@ void Board::printLines()
         cout << endl;
     }
 
-bool Board::makeMove(char mov[2], char player)
+void Board::makeMove(char mov[2], char player)
     {
         int i = ( mov[0] - 65);
         int j = (mov[1] - 49);
 
         grid[i][j] = player;
 
-        if ( updateLines() )
-            {
-                return true;
-            }
-
-        else
-            {
-                return false;
-            }
+        updateLines();
     }
 
 //todo: take input from the grid and insert it into the lines
-bool Board::updateLines()
+void Board::updateLines()
     {
         for (int i = 0; i < 3; i++)
             {
@@ -101,22 +93,22 @@ bool Board::updateLines()
                 D2.setMove( i, grid[2-i][i] );
             }
 
-        return checkLines();
+        checkLines();
     }
 
-bool Board::checkLines()
+void Board::checkLines()
     {
 
         if ( R1.isWinner() || R2.isWinner() || R3.isWinner() ||
              C1.isWinner() || C2.isWinner() || C3.isWinner() ||
              D1.isWinner() || D2.isWinner() )
             {
-                return true;
+                winner = true;
             }
 
         else
             {
-                return false;
+                winner = false;
             }
     }
 
@@ -124,6 +116,7 @@ bool Board::checkLines()
 // returns true if input is good
 bool Board::isInputOkay(char input[2])
     {
+        input[0] = toupper(input[0]);
         if ( (input[0] != 'A' && input[0] != 'B' && input[0] != 'C') ||
              (input[1] != '1' && input[1] != '2' && input[1] != '3') )
             {
@@ -165,4 +158,9 @@ bool Board::isSpaceEmpty( char mov[2] )
                 {
                     return true;
                 }
+    }
+
+bool Board::isWinner()
+    {
+        return winner;
     }
