@@ -22,6 +22,7 @@
 
 #include <iostream>
 #include <cstring>
+#include <cstdlib>
 #include "Board.h"
 using namespace std;
 
@@ -30,6 +31,14 @@ int main()
         char repeat = 'n';
 
     do {
+            int players;
+            cout << "One player or two? (enter 1 or 2)\n";
+                do {
+                    cin >> players;
+                    if (players != 1 && players != 2)
+                        cout << "enter 1 or 2: ";
+             } while ((players != 1) && (players != 2));
+
         Board game;
         char mv[3] = "  ";
         char dummy[256];
@@ -50,21 +59,32 @@ int main()
 
                 else if (i % 2 == 1)
                     {
-                        cout << "Player O, your turn.\n";
+                        if (players == 2)
+                          {
+                            cout << "Player O, your turn.\n";
                             player = 'O';
+                          }
+
+                        else
+                          {
+                            cout << "Computer is thinking...\n";
+                            game.computersMove('O');
+                            sleep(5);
+                          }
                     }
 
-
-                do {
-                        cout << "Enter your move. ";
+                    if ( (i % 2 == 0) || ((i % 2 == 1) && (players == 2)) )
+                      {
+                        do {
+                          cout << "Enter your move. ";
                           cin >> mv;
                           cin.getline(dummy, 256);
-
-                    } while (!( game.isInputOkay(mv)));
-
-                    game.makeMove(mv, player);
+                           } while (!( game.isInputOkay(mv)));
+                        game.makeMove(mv, player);
+                      }
 
                 cout << endl;
+
             } while ( (i < 8) && !game.isWinner() );
 
             game.printGrid();
@@ -74,14 +94,26 @@ int main()
                     cout << "Draw!\n";
                 }
 
-            else
+            else if (players == 2)
                 {
-                    cout << "Player " << player << ", you win!\n";
+                    cout << "Player " << game.whoWon() << ", you win!\n";
+                }
+
+            else if (players == 1)
+                {
+                    if (game.whoWon() == 'X')
+                      cout << "Aw, you beat me!\n";
+
+                    else if (game.whoWon() == 'O')
+                      cout << "Ha! I win!\n";
+
+                    else
+                      cout << "Dan fucked something up while programming.\n";
                 }
 
 
 
-            cout << "\nEnter y to play again, or anything to exit. ";
+            cout << "\nEnter y to play again, or anything else to exit. ";
                 cin >> repeat;
         } while (toupper(repeat) == 'Y');
 
