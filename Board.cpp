@@ -1,5 +1,7 @@
 #include <iostream>
 #include <cstring>
+#include <ctime>
+#include <cstdlib>
 #include "Board.h"
 #include "Line.h"
 
@@ -19,6 +21,7 @@ Board::Board()
         }
 
     Line R1, R2, R3, C1, C2, C3, D1, D2;
+    winner = false;
 }
 
 // fcn formats/prints the contents of the board
@@ -68,26 +71,18 @@ void Board::printLines()
         cout << endl;
     }
 
-bool Board::makeMove(char mov[2], char player)
+void Board::makeMove(char mov[2], char player)
     {
         int i = ( mov[0] - 65);
         int j = (mov[1] - 49);
 
         grid[i][j] = player;
 
-        if ( updateLines() )
-            {
-                return true;
-            }
-
-        else
-            {
-                return false;
-            }
+        updateLines();
     }
 
 //todo: take input from the grid and insert it into the lines
-bool Board::updateLines()
+void Board::updateLines()
     {
         for (int i = 0; i < 3; i++)
             {
@@ -100,23 +95,20 @@ bool Board::updateLines()
                 D1.setMove( i, grid[i][i] );
                 D2.setMove( i, grid[2-i][i] );
             }
-
-        return checkLines();
     }
 
-bool Board::checkLines()
+void Board::checkLines()
     {
-
         if ( R1.isWinner() || R2.isWinner() || R3.isWinner() ||
              C1.isWinner() || C2.isWinner() || C3.isWinner() ||
              D1.isWinner() || D2.isWinner() )
             {
-                return true;
+                winner = true;
             }
 
         else
             {
-                return false;
+                winner = false;
             }
     }
 
@@ -125,6 +117,7 @@ bool Board::checkLines()
 bool Board::isInputOkay(char input[2])
     {
         input[0] = toupper(input[0]);
+
         if ( (input[0] != 'A' && input[0] != 'B' && input[0] != 'C') ||
              (input[1] != '1' && input[1] != '2' && input[1] != '3') )
             {
@@ -148,9 +141,19 @@ bool Board::isInputOkay(char input[2])
             {
                 return true;
             }
+
+
+
     }
 
-
+/*
+* 1 2 3
+A 0|1|2
+  -----
+B 3|4|5
+  -----
+C 6|7|8
+*/
 
 bool Board::isSpaceEmpty( char mov[2] )
     {
@@ -167,3 +170,58 @@ bool Board::isSpaceEmpty( char mov[2] )
                     return true;
                 }
     }
+
+bool Board::isWinner()
+  {
+      checkLines();
+      return winner;
+  }
+
+void Board::computersMove(char comp)
+  {
+      srand(time(NULL));
+      int i, j;
+
+      do {
+            i = rand() % 3;
+            j = rand() % 3;
+         }  while (grid[i][j] != ' ');
+
+      grid[i][j] = comp;
+
+      updateLines();
+  }
+
+char Board::whoWon()
+  {
+      char winner;
+
+      if (R1.isWinner())
+        winner = R1.moves[0];
+
+      else if (R2.isWinner())
+        winner = R2.moves[0];
+
+      else if (R3.isWinner())
+        winner = R3.moves[0];
+
+      else if (C1.isWinner())
+        winner = C1.moves[0];
+
+      else if (C2.isWinner())
+        winner = C2.moves[0];
+
+      else if (C3.isWinner())
+        winner = C3.moves[0];
+
+      else if (D1.isWinner())
+        winner = D1.moves[0];
+
+      else if (D2.isWinner())
+        winner = D2.moves[0];
+
+      else
+        winner = 'E';
+
+      return winner;
+  }
